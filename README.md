@@ -1,46 +1,118 @@
-# Getting Started with Create React App
+# Lost and Found System – Frontend (React + TypeScript)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend component of the **Lost and Found Management System**, developed as part of the **CMJD coursework** (Batch 108/109). The system enables users of an educational institute to report and search for lost and found items with full role-based access.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Technologies Used
 
-### `npm start`
+- React (with TypeScript)
+- React Router v6
+- Axios (for API calls)
+- Bootstrap 5 (for responsive UI)
+- JWT Authentication
+- Role-based Routing & Protection
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🧩 Project Features
 
-### `npm test`
+### 🔐 Authentication
+- User registration (`/signup`)
+- User login (`/login`)
+- JWT-based session handling
+- Protected routes per role
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 👤 USER Role
+- Dashboard: `/user/dashboard`
+- Report Lost Item: `/user/report`
+- View Lost Items: `/user/lost`
+- View Found Items: `/user/found`
+- Claim Found Item + track status: `/user/claims`
 
-### `npm run build`
+### 🧑‍🔧 STAFF Role
+- Dashboard: `/staff/dashboard`
+- Report Found Item: `/staff/report`
+- View Found Items: `/staff/found`
+- Manage Claim Requests: `/staff/claims`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 👨‍💼 ADMIN Role
+- Dashboard: `/admin/dashboard`
+- View All Items + Delete: `/admin/items`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📁 Project Structure
 
-### `npm run eject`
+```
+src/
+├── pages/               # All route-based page components
+├── components/          # Reusable components (Navbar, ProtectedRoute)
+├── services/            # API handling (login, signup, item, request)
+├── utils/               # Token decoder for JWT auth
+├── App.tsx              # Main App container with router
+├── Router.tsx           # Centralized route definitions
+├── index.tsx            # Entry point
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+---
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠️ Setup Instructions
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. **Clone the Repository:**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+git clone https://github.com/your-username/lost-and-found-frontend.git
+cd lost-and-found-frontend
+```
 
-## Learn More
+2. **Install Dependencies:**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. **Start the Frontend:**
+
+```bash
+npm start
+```
+
+> The app will run at: `http://localhost:3000`
+
+---
+
+## 🌐 Environment Configuration
+
+Ensure your backend is running at:
+```
+http://localhost:8080
+```
+
+Make sure CORS is enabled in your Spring Boot backend for `http://localhost:3000`.
+
+---
+
+## ✅ Completed Requirements
+
+| Feature                                | Status |
+|----------------------------------------|--------|
+| React project with TypeScript          | ✅ Done |
+| React Router & protected routes        | ✅ Done |
+| Role-based dashboards & navigation     | ✅ Done |
+| Auth token handling (JWT)              | ✅ Done |
+| Lost item reporting & viewing          | ✅ Done |
+| Found item reporting & claiming        | ✅ Done |
+| Claim tracking (user & staff)          | ✅ Done |
+| Bootstrap styling & layout             | ✅ Done |
+
+---
+
+## 📝 Coursework Reference
+
+**Assignment**: Frontend Development  
+**Framework**: React + TypeScript  
+**Course**: CMJD – Comprehensive Master Java Developer  
+**Batch**: 108 / 109
+
+---
