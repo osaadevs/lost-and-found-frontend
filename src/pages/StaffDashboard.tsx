@@ -1,20 +1,36 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const StaffDashboard: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="container mt-5">
-      <h2>Welcome, Staff</h2>
-      <div className="row mt-4">
-        <div className="col-md-6 mb-3">
-          <Link to="/staff/report" className="btn btn-primary w-100">Report Found Item</Link>
-        </div>
-        <div className="col-md-6 mb-3">
-          <Link to="/staff/found" className="btn btn-outline-primary w-100">View Found Items</Link>
-        </div>
-        <div className="col-md-6 mb-3">
-          <Link to="/staff/claims" className="btn btn-outline-primary w-100">Manage Claims</Link>
-        </div>
+    <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100">
+      <div className="text-center mb-5">
+        <h2 className="fw-bold">Welcome, Staff</h2>
+        <p className="text-muted">Manage lost and found item requests</p>
+      </div>
+
+      <div className="w-100" style={{ maxWidth: '400px' }}>
+        <button
+          className="btn btn-primary w-100 py-4 fs-5 mb-3"
+          onClick={() => navigate('/staff/found')}
+        >
+          View All Items
+        </button>
+
+        <button
+          className="btn btn-outline-primary w-100 py-4 fs-5 mb-3"
+          onClick={() => navigate('/staff/claims')}
+        >
+          View Claim Requests
+        </button>
+        <button
+          className="btn btn-success w-100 py-4 fs-5"
+          onClick={() => navigate('/staff/report')}
+        >
+          Report Found Item
+        </button>
       </div>
     </div>
   );

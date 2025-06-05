@@ -12,78 +12,84 @@ interface Item {
 
 const FoundItemsForUser: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
-  const [error, setError] = useState('');
   const [message, setMessage] = useState('');
-  const [claimMessage, setClaimMessage] = useState<{ [key: number]: string }>({});
+  const [error, setError] = useState('');
+  const [claimMsg, setClaimMsg] = useState<{ [key: number]: string }>({});
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:8080/api/items', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const foundItems = res.data.filter((item: Item) => item.status === 'FOUND');
-        setItems(foundItems);
-      } catch (err) {
-        setError('Failed to fetch found items.');
-      }
-    };
+  const token = localStorage.getItem('token');
 
-    fetchItems();
-  }, []);
-
-  const handleClaim = async (itemId: number) => {
+  const fetchItems = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const messageToSend = claimMessage[itemId] || '';
-      await axios.post(
-        `http://localhost:8080/api/requests/${itemId}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { message: messageToSend },
-        }
-      );
-      setMessage('Claim request submitted.');
+      const res = await axios.get('http://localhost:8080/api/items', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const foundItems = res.data.filter((item: Item) => item.status === 'FOUND');
+      setItems(foundItems);
     } catch (err) {
-      setMessage('Failed to submit claim.');
+      setError('Failed to fetch items.');
     }
   };
 
-  const handleMessageChange = (itemId: number, value: string) => {
-    setClaimMessage(prev => ({ ...prev, [itemId]: value }));
+  const handleClaim = async (itemId: number) => {
+    try {
+      await axios.post(
+        `http://localhost:8080/api/requests/${itemId}?message=${claimMsg[itemId] || ''}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setMessage('Claim request sent!');
+    } catch (err) {
+      setMessage('Failed to send claim request.');
+    }
   };
 
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
   return (
-    <div className="container mt-5">
-      <h2>Items Reported as Found</h2>
-      {error && <p className="text-danger">{error}</p>}
-      {message && <p className="text-success">{message}</p>}
+    <div className="container py-5">
+      <h2 className="mb-4">Available Found Items</h2>
+      {error && <div className="alert alert-danger">{error}</div>}
+      {message && <div className="alert alert-success">{message}</div>}
+
       {items.length === 0 ? (
-        <p>No found items reported yet.</p>
+        <div className="alert alert-info">No found items available.</div>
       ) : (
-        <div className="list-group">
+        <div className="row row-cols-1 row-cols-md-2 g-4">
           {items.map(item => (
-            <div key={item.id} className="list-group-item mb-3">
-              <h5>{item.name}</h5>
-              <p><strong>Description:</strong> {item.description}</p>
-              <p><strong>Location:</strong> {item.location}</p>
-              <p><strong>Date:</strong> {item.date}</p>
-              <textarea
-                className="form-control mt-2"
-                placeholder="Why do you believe this is your item?"
-                value={claimMessage[item.id] || ''}
-                onChange={e => handleMessageChange(item.id, e.target.value)}
-              />
-              <button
-                className="btn btn-outline-primary btn-sm mt-2"
-                onClick={() => handleClaim(item.id)}
-              >
-                Claim
-              </button>
+            <div key={item.id} className="col">
+              <div className="card h-100 shadow-sm">
+                <div className="card-body">
+                  <h5 className="card-title">{item.name}</h5>
+                  <p className="card-text mb-1"><strong>Description:</strong> {item.description}</p>
+                  <p className="card-text mb-1"><strong>Location:</strong> {item.location}</p>
+                  <p className="card-text mb-3"><strong>Date:</strong> {item.date}</p>
+
+                  <textarea
+                    className="form-control mb-3"
+                    rows={2}
+                    placeholder="Enter claim message"
+                    value={claimMsg[item.id] || ''}
+                    onChange={e =>
+                      setClaimMsg({ ...claimMsg, [item.id]: e.target.value })
+                    }
+                  ></textarea>
+
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => handleClaim(item.id)}
+                  >
+                    Send Claim Request
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>

@@ -57,35 +57,37 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit} className="mt-4">
-                <div className="mb-3">
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        className={`form-control ${errors.username && 'is-invalid'}`}
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                    />
-                    {errors.username && <div className="invalid-feedback">{errors.username}</div>}
-                </div>
+        <div className="container d-flex justify-content-center align-items-center min-vh-100">
+            <div className="card shadow-lg p-4" style={{ minWidth: '400px' }}>
+                <h3 className="text-center mb-4">Login</h3>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label>Username</label>
+                        <input
+                            type="text"
+                            className={`form-control ${errors.username && 'is-invalid'}`}
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                        />
+                        {errors.username && <div className="invalid-feedback">{errors.username}</div>}
+                    </div>
 
-                <div className="mb-3">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        className={`form-control ${errors.password && 'is-invalid'}`}
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                    {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-                </div>
+                    <div className="mb-4">
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            className={`form-control ${errors.password && 'is-invalid'}`}
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                        />
+                        {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                    </div>
 
-                <button type="submit" className="btn btn-primary">Login</button>
-            </form>
+                    <button type="submit" className="btn btn-primary w-100">Login</button>
+                </form>
+            </div>
         </div>
     );
 };

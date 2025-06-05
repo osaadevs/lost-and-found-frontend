@@ -49,29 +49,45 @@ const AdminItemList: React.FC = () => {
   }, []);
 
   return (
-    <div className="container mt-5">
-      <h2>All Reported Items</h2>
-      {error && <p className="text-danger">{error}</p>}
-      {message && <p className="text-success">{message}</p>}
+    <div className="container py-5">
+      <h2 className="mb-4">All Reported Items</h2>
+      {error && <div className="alert alert-danger">{error}</div>}
+      {message && <div className="alert alert-success">{message}</div>}
+
       {items.length === 0 ? (
-        <p>No items found in the system.</p>
+        <div className="alert alert-info">No items found in the system.</div>
       ) : (
-        <div className="list-group">
+        <div className="row row-cols-1 row-cols-md-2 g-4">
           {items.map(item => (
-            <div key={item.id} className="list-group-item mb-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div>
-                  <h5>{item.name} <span className="badge bg-secondary">{item.status}</span></h5>
-                  <p><strong>Description:</strong> {item.description}</p>
-                  <p><strong>Location:</strong> {item.location}</p>
-                  <p><strong>Date:</strong> {item.date}</p>
+            <div key={item.id} className="col">
+              <div className="card h-100 shadow-sm">
+                <div className="card-body">
+                  <h5 className="card-title d-flex justify-content-between align-items-center">
+                    {item.name}
+                    <span
+                      className={`badge ${
+                        item.status === 'LOST'
+                          ? 'bg-danger'
+                          : item.status === 'FOUND'
+                          ? 'bg-success'
+                          : 'bg-secondary'
+                      }`}
+                    >
+                      {item.status}
+                    </span>
+                  </h5>
+                  <p className="card-text mb-1"><strong>Description:</strong> {item.description}</p>
+                  <p className="card-text mb-1"><strong>Location:</strong> {item.location}</p>
+                  <p className="card-text"><strong>Date:</strong> {item.date}</p>
                 </div>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="btn btn-danger btn-sm"
-                >
-                  Delete
-                </button>
+                <div className="card-footer text-end">
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="btn btn-danger btn-sm"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}

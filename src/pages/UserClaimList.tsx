@@ -1,71 +1,77 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-interface Item {
-  name: string;
-  description: string;
-  location: string;
-  date: string;
-  status: string;
-}
-
 interface Request {
   id: number;
-  item: Item;
-  status: string;
+  item: {
+    name: string;
+    description: string;
+    location: string;
+    date: string;
+  };
   message: string;
+  status: string;
 }
 
 const UserClaimList: React.FC = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchUserRequests = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:8080/api/requests/my', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setRequests(res.data);
-      } catch (err) {
-        setError('Failed to load your requests.');
-      }
-    };
+  const token = localStorage.getItem('token');
 
-    fetchUserRequests();
+  const fetchRequests = async () => {
+    try {
+      const res = await axios.get('http://localhost:8080/api/user/claims', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRequests(res.data);
+    } catch (err) {
+      setError('Failed to fetch claim requests.');
+    }
+  };
+
+  useEffect(() => {
+    fetchRequests();
   }, []);
 
-  const getStatusBadgeClass = (status: string): string => {
+  const getBadgeClass = (status: string) => {
     switch (status) {
       case 'APPROVED':
-        return 'badge bg-success';
+        return 'bg-success';
       case 'REJECTED':
-        return 'badge bg-danger';
+        return 'bg-danger';
       case 'PENDING':
+        return 'bg-warning text-dark';
       default:
-        return 'badge bg-warning text-dark';
+        return 'bg-secondary';
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h2>My Claim Requests</h2>
-      {error && <p className="text-danger">{error}</p>}
+    <div className="container py-5">
+      <h2 className="mb-4">My Claim Requests</h2>
+      {error && <div className="alert alert-danger">{error}</div>}
+
       {requests.length === 0 ? (
-        <p>You haven't submitted any claims.</p>
+        <div className="alert alert-info">You haven't submitted any claims yet.</div>
       ) : (
-        <div className="list-group">
+        <div className="row row-cols-1 row-cols-md-2 g-4">
           {requests.map(req => (
-            <div key={req.id} className="list-group-item mb-3">
-              <h5>
-                Item: {req.item.name}{' '}
-                <span className={getStatusBadgeClass(req.status)}>{req.status}</span>
-              </h5>
-              <p><strong>Message:</strong> {req.message}</p>
-              <p><strong>Item Description:</strong> {req.item.description}</p>
+            <div key={req.id} className="col">
+              <div className="card h-100 shadow-sm">
+                <div className="card-body">
+                  <h5 className="card-title d-flex justify-content-between align-items-center">
+                    {req.item.name}
+                    <span className={`badge ${getBadgeClass(req.status)}`}>{req.status}</span>
+                  </h5>
+                  <p className="card-text mb-1"><strong>Description:</strong> {req.item.description}</p>
+                  <p className="card-text mb-1"><strong>Location:</strong> {req.item.location}</p>
+                  <p className="card-text mb-1"><strong>Date:</strong> {req.item.date}</p>
+                  <p className="card-text mt-3"><strong>Your Claim Message:</strong> {req.message}</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>

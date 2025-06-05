@@ -1,23 +1,44 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const UserDashboard: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="container mt-5">
-      <h2>Welcome, User</h2>
-      <div className="row mt-4">
-        <div className="col-md-6 mb-3">
-          <Link to="/user/report" className="btn btn-primary w-100">Report Lost Item</Link>
-        </div>
-        <div className="col-md-6 mb-3">
-          <Link to="/user/lost" className="btn btn-outline-primary w-100">View Lost Items</Link>
-        </div>
-        <div className="col-md-6 mb-3">
-          <Link to="/user/found" className="btn btn-outline-primary w-100">View Found Items</Link>
-        </div>
-        <div className="col-md-6 mb-3">
-          <Link to="/user/claims" className="btn btn-outline-primary w-100">My Claims</Link>
-        </div>
+    <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100">
+      <div className="text-center mb-5">
+        <h2 className="fw-bold">Welcome, User</h2>
+        <p className="text-muted">What would you like to do today?</p>
+      </div>
+
+      <div className="w-100" style={{ maxWidth: '400px' }}>
+        <button
+          className="btn btn-primary w-100 py-4 fs-5 mb-3"
+          onClick={() => navigate('/user/report')}
+        >
+          Report Lost Item
+        </button>
+
+        <button
+          className="btn btn-outline-primary w-100 py-4 fs-5 mb-3"
+          onClick={() => navigate('/user/lost')}
+        >
+          View Lost Items
+        </button>
+
+        <button
+          className="btn btn-outline-primary w-100 py-4 fs-5 mb-3"
+          onClick={() => navigate('/user/found')}
+        >
+          View Found Items
+        </button>
+
+        <button
+          className="btn btn-outline-secondary w-100 py-4 fs-5"
+          onClick={() => navigate('/user/claims')}
+        >
+          My Claims
+        </button>
       </div>
     </div>
   );
